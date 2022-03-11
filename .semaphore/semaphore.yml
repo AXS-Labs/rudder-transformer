@@ -3,7 +3,7 @@ name: First pipeline example
 agent:
   machine:
     type: e1-standard-2
-    os_image: ubuntu1804
+    os_image: ubuntu2004
 
 blocks:
   - name: "Build"
@@ -14,11 +14,12 @@ blocks:
       prologue:
         commands:
           - sem-version node 14.17.4
-          - sudo update || true
-          - sudo apt-get install -y python2-minimal make g++
+          - sudo apt-get update || true
+          - sudo apt-get install -y make g++
       jobs:
       - name: Test
         commands:
           - checkout
-          - npm install
-          - npm run test
+          - nvm exec npm install -g npm@latest
+          - nvm exec npm install
+          - nvm exec npm run test
