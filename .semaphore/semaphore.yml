@@ -14,6 +14,7 @@ blocks:
       prologue:
         commands:
           - sem-version node 14.17.4
+          - apt-get install -y tini python2 make g++
       jobs:
       - name: Test
         commands:
