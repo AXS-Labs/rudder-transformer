@@ -36,8 +36,11 @@ const ecomPayloadBuilder = (event, shopifyTopic) => {
     // converting shopify updated_at timestamp to rudder timestamp format
     message.setTimestamp(new Date(event.updated_at).toISOString());
   }
+
   if (event.user_id) {
     message.setProperty("userId", event.user_id);
+  } else if (event.customer && event.customer.id) {
+    message.setProperty("userId", event.customer.id);
   }
 
   if (event.note_attributes) {
@@ -60,9 +63,13 @@ const trackPayloadBuilder = (event, shopifyTopic) => {
     .forEach(key => {
       message.setProperty(`properties.${key}`, event[key]);
     });
+
   if (event.user_id) {
     message.setProperty("userId", event.user_id);
+  } else if (event.customer && event.customer.id) {
+    message.setProperty("userId", event.customer.id);
   }
+
   if (event.note_attributes) {
     event.note_attributes.forEach(obj => {
       if (obj.name == "_anonymousId") {
