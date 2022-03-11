@@ -36,11 +36,3 @@ blocks:
         commands:
           - echo $SEMAPHORE_JOB_RESULT
           - echo $SEMAPHORE_PIPELINE_ID
-
-promotions:
-  - name: Deploy
-    pipeline_file: deploy.yml
-    auto_promote_on:
-      - result: passed
-        branch:
-          - master
