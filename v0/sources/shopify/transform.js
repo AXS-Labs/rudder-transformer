@@ -132,6 +132,7 @@ const processIdentifyEvent = (event, shopifyTopic) => {
     userId = event.user_id
   } else if (event.customer && event.customer.id) {
     userId = event.customer.id
+    message.setPropertiesV2(event.customer, MAPPING_CATEGORIES[EventType.IDENTIFY]);
   }
 
   if (event.note_attributes) {
@@ -151,6 +152,7 @@ const processIdentifyEvent = (event, shopifyTopic) => {
     message.setProperty("anonymousId", anonymousId);
     message.setProperty("userId", userId);
 
+
     message.setProperty(`integrations.${INTEGERATION}`, true);
 
     return message;
@@ -165,10 +167,10 @@ const process = event => {
 
   let responses = processEvent(event, shopifyTopic);
 
-  // const identifyResponse = processIdentifyEvent(event, shopifyTopic);
-  // if (identifyResponse) {
-  //   responses = [identifyResponse, responses];
-  // }
+  const identifyResponse = processIdentifyEvent(event, shopifyTopic);
+  if (identifyResponse) {
+    responses = [identifyResponse, responses];
+  }
 
   return responses;
 };
