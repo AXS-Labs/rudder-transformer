@@ -165,10 +165,10 @@ const process = event => {
 
   let responses = processEvent(event, shopifyTopic);
 
-  const identifyResponse = processIdentifyEvent(event, shopifyTopic);
-  if (identifyResponse) {
-    responses = [identifyResponse, responses];
-  }
+  // const identifyResponse = processIdentifyEvent(event, shopifyTopic);
+  // if (identifyResponse) {
+  //   responses = [identifyResponse, responses];
+  // }
 
   return responses;
 };
