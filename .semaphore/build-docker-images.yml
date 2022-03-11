@@ -28,6 +28,8 @@ blocks:
             - docker build -t ${DOCKER_HUB_SERVER_REPO_NAME} .
             - docker tag ${DOCKER_HUB_SERVER_REPO_NAME} ${DOCKER_HUB_SERVER_REPO_NAME}:${SEMAPHORE_GIT_SHA}
             - docker push ${DOCKER_HUB_SERVER_REPO_NAME}:${SEMAPHORE_GIT_SHA}
+            - docker tag ${DOCKER_HUB_SERVER_REPO_NAME} ${DOCKER_HUB_SERVER_REPO_NAME}:${GIT_BRANCH_NORMALIZED}
+            - docker push ${DOCKER_HUB_SERVER_REPO_NAME}:${GIT_BRANCH_NORMALIZED}
             - echo "pushed ${DOCKER_HUB_SERVER_REPO_NAME}:${SEMAPHORE_GIT_SHA}"
 
       epilogue:
