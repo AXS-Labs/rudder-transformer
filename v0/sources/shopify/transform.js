@@ -80,10 +80,8 @@ const trackPayloadBuilder = (event, shopifyTopic) => {
   return message;
 };
 
-const processEvent = event => {
+const processEvent = (event, shopifyTopic) => {
   let message;
-  const shopifyTopic = getShopifyTopic(event);
-  delete event.query_parameters;
 
   switch (shopifyTopic) {
     case IDENTIFY_TOPICS.CUSTOMERS_CREATE:
@@ -110,12 +108,69 @@ const processEvent = event => {
     message.setProperty("anonymousId", generateUUID());
   }
   message.setProperty(`integrations.${INTEGERATION}`, true);
+
   return message;
 };
 
+const processIdentifyEvent = (event, shopifyTopic) => {
+  let message;
+  let userId;
+  let anonymousId;
+
+  if (shopifyTopic == IDENTIFY_TOPICS.CUSTOMERS_CREATE) {
+    return
+  }
+
+  if (shopifyTopic == IDENTIFY_TOPICS.CUSTOMERS_UPDATE) {
+    return
+  }
+
+  message = new Message(INTEGERATION);
+  message.setEventType(EventType.IDENTIFY);
+
+  if (event.user_id) {
+    userId = event.user_id
+  } else if (event.customer && event.customer.id) {
+    userId = event.customer.id
+  }
+
+  if (event.note_attributes) {
+    event.note_attributes.forEach(obj => {
+      if (obj.name == "_anonymousId") {
+        anonymousId = obj.value;
+      }
+    });
+  }
+
+  if (event.updated_at) {
+    // converting shopify updated_at timestamp to rudder timestamp format
+    message.setTimestamp(new Date(event.updated_at).toISOString());
+  }
+
+  if (anonymousId && userId) {
+    message.setProperty("anonymousId", anonymousId);
+    message.setProperty("userId", userId);
+
+    message.setProperty(`integrations.${INTEGERATION}`, true);
+
+    return message;
+  }
+
+  return;
+}
+
 const process = event => {
-  const response = processEvent(event);
-  return response;
+  const shopifyTopic = getShopifyTopic(event);
+  delete event.query_parameters;
+
+  let responses = processEvent(event, shopifyTopic);
+
+  const identifyResponse = processIdentifyEvent(event, shopifyTopic);
+  if (identifyResponse) {
+    responses = [identifyResponse, responses];
+  }
+
+  return responses;
 };
 
 exports.process = process;
