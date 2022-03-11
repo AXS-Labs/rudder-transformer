@@ -40,6 +40,14 @@ const ecomPayloadBuilder = (event, shopifyTopic) => {
     message.setProperty("userId", event.user_id);
   }
 
+  if (event.note_attributes) {
+    event.note_attributes.forEach(obj => {
+      if (obj.name == "_anonymousId") {
+        message.setProperty("anonymousId", obj.value);
+      }
+    });
+  }
+
   return message;
 };
 
