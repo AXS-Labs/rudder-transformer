@@ -11,6 +11,9 @@ blocks:
       env_vars:
         - name: LOG_LEVEL
           value: "0"
+      prologue:
+        commands:
+          - sem-version node 14.17.4
       jobs:
       - name: Test
         commands:
