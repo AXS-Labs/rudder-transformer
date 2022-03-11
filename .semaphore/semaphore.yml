@@ -15,7 +15,7 @@ blocks:
         commands:
           - sem-version node 14.17.4
           - sudo update || true
-          - sudo apt-get install -y tini python2 make g++
+          - sudo apt-get install -y python2-minimal make g++
       jobs:
       - name: Test
         commands:
