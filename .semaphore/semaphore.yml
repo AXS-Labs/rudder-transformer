@@ -21,5 +21,5 @@ blocks:
         commands:
           - checkout
           - nvm exec npm install -g npm@latest
-          - nvm exec npm install
+          - nvm exec npm install --no-progress
           - nvm exec npm run test
