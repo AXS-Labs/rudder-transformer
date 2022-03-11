@@ -1,0 +1,44 @@
+version: v1.0
+name: Build Docker images
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu2004
+blocks:
+  - name: Build Images
+    task:
+      secrets:
+        - name: axs-docker-secrets
+      env_vars:
+        - name: DOCKER_HUB_SERVER_REPO_NAME
+          value: "axslabs/rudder-transfomer"
+      prologue:
+        commands:
+          # Authenticate to the registry for all jobs in the block
+          - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+          - export GIT_BRANCH_NORMALIZED=$(echo "$SEMAPHORE_GIT_BRANCH" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9._-]//g')
+      jobs:
+        - name: Build Server
+          commands:
+            - checkout
+            - echo "export $DOCKER_HUB_SERVER_REPO_NAME"
+            - echo "export $GIT_BRANCH_NORMALIZED"
+            - echo "export $SEMAPHORE_GIT_SHA"
+            - docker pull ${DOCKER_HUB_SERVER_REPO_NAME}:master || true
+            - docker build -t ${DOCKER_HUB_SERVER_REPO_NAME} .
+            - docker tag ${DOCKER_HUB_SERVER_REPO_NAME} ${DOCKER_HUB_SERVER_REPO_NAME}:${SEMAPHORE_GIT_SHA}
+            - docker push ${DOCKER_HUB_SERVER_REPO_NAME}:${SEMAPHORE_GIT_SHA}
+            - echo "pushed ${DOCKER_HUB_SERVER_REPO_NAME}:${SEMAPHORE_GIT_SHA}"
+
+      epilogue:
+        commands:
+          - echo $SEMAPHORE_JOB_RESULT
+          - echo $SEMAPHORE_PIPELINE_ID
+
+promotions:
+  - name: Deploy
+    pipeline_file: deploy.yml
+    auto_promote_on:
+      - result: passed
+        branch:
+          - master

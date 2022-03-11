@@ -23,3 +23,9 @@ blocks:
           - nvm exec npm install -g npm@latest
           - nvm exec npm install --no-progress
           - nvm exec npm run test
+
+promotions:
+  - name: Build Docker
+    pipeline_file: build-docker-images.yml
+    auto_promote_on:
+      - result: passed
