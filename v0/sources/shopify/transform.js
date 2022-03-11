@@ -55,6 +55,13 @@ const trackPayloadBuilder = (event, shopifyTopic) => {
   if (event.user_id) {
     message.setProperty("userId", event.user_id);
   }
+  if (event.note_attributes) {
+    event.note_attributes.forEach(obj => {
+      if (obj.name == "_anonymousId") {
+        message.setProperty("anonymousId", obj.value);
+      }
+    });
+  }
   return message;
 };
 
@@ -83,7 +90,10 @@ const processEvent = event => {
   if (message.userId) {
     message.userId = String(message.userId);
   }
-  message.setProperty("anonymousId", generateUUID());
+
+  if (!message.anonymousId) {
+    message.setProperty("anonymousId", generateUUID());
+  }
   message.setProperty(`integrations.${INTEGERATION}`, true);
   return message;
 };
