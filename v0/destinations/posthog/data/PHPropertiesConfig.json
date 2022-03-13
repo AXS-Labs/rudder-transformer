@@ -32,6 +32,31 @@
     "all": true
   },
   {
+    "destKey": "utm_medium",
+    "sourceKeys": "context.campaign.medium",
+    "all": true
+  },
+  {
+    "destKey": "utm_content",
+    "sourceKeys": "context.campaign.content",
+    "all": true
+  },
+  {
+    "destKey": "utm_campaign",
+    "sourceKeys": "context.campaign.name",
+    "all": true
+  },
+  {
+    "destKey": "utm_source",
+    "sourceKeys": "context.campaign.source",
+    "all": true
+  },
+  {
+    "destKey": "utm_term",
+    "sourceKeys": "context.campaign.term",
+    "all": true
+  },
+  {
     "destKey": "$insert_id",
     "sourceKeys": ""
   },
@@ -51,7 +76,7 @@
     "sourceKeys": [
       "context.ip",
       "request_ip"
-      
+
     ],
     "all": true
   },

@@ -504,7 +504,12 @@
           "$os": "Mac OS",
           "$browser": "Chrome",
           "$browser_version": "85.0.4183.121",
-          "$host": "docs.rudderstack.com"
+          "$host": "docs.rudderstack.com",
+          "utm_campaign": "some campaign",
+          "utm_content": "some content",
+          "utm_medium": "medium",
+          "utm_source": "google",
+          "utm_term": "keyword"
         },
         "event": "$group",
         "api_key": "K_HlByO3IE73-Tz4ch1LNDs0JGdwbknNGolFc4HdoAE",
@@ -560,7 +565,12 @@
           "$os": "Mac OS",
           "$browser": "Chrome",
           "$browser_version": "85.0.4183.121",
-          "$host": "docs.rudderstack.com"
+          "$host": "docs.rudderstack.com",
+          "utm_campaign": "some campaign",
+          "utm_content": "some content",
+          "utm_medium": "medium",
+          "utm_source": "google",
+          "utm_term": "keyword"
         },
         "event": "$group",
         "api_key": "K_HlByO3IE73-Tz4ch1LNDs0JGdwbknNGolFc4HdoAE",
