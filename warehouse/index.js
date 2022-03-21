@@ -31,6 +31,11 @@ const maxColumnsInEvent = parseInt(
 const WH_POPULATE_SRC_DEST_INFO_IN_CONTEXT = process.env.WH_POPULATE_SRC_DEST_INFO_IN_CONTEXT || true;
 
 const getDataType = (key, val, options) => {
+  // override for 'context_screen_density' key. Sometime it is only an int and sometimes a float.
+  if (key === 'density') {
+    return "float";
+  }
+
   const type = typeof val;
   switch (type) {
     case "number":
